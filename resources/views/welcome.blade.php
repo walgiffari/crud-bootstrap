@@ -18,6 +18,11 @@
       <input type="text" name="search" class="search" placeholder="Cari Nama Pegawai..."> <button>Submit</button> 
     </form>
     <button type="button" class="btn-tambah btn btn-primary">+ Tambah Pegawai Baru</button>
+    @if(session()->has('message'))
+    <div class="alert alert-success">
+        {{ session()->get('message') }}
+    </div>
+@endif
     <table border="1" class="table">
   <thead>
     <tr>
@@ -37,7 +42,7 @@
        <td>{{ $item->jabatan }}</td>
        <td>{{ $item->umur }}</td>
        <td>{{ $item->alamat }}</td>
-       <td> <button type="button" class="btn btn-warning">Edit</button> <button type="button" class="btn btn-danger">Hapus</button></td>
+       <td><a href="{{ route('edit', $item->id) }}"><button type="button" class="btn btn-warning">Edit</button></a> <button type="button" class="btn btn-danger">Hapus</button></td>
       </tr>
     </tbody>
 @endforeach

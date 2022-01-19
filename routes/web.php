@@ -15,3 +15,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [PegawaiController::class, 'index'])->name('index');
+Route::get('/edit/{id}', [PegawaiController::class, 'edit'])->name('edit');
+Route::post('/edit/store', [PegawaiController::class, 'edit_store'])->name('edit_store');

@@ -7,6 +7,7 @@ use App\Http\Requests\UpdatePegawaiRequest;
 use App\Models\Pegawai;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Request as FacadesRequest;
+use Illuminate\Support\Facades\DB;
 
 class PegawaiController extends Controller
 {
@@ -69,18 +70,35 @@ class PegawaiController extends Controller
      * @param  \App\Models\Pegawai  $pegawai
      * @return \Illuminate\Http\Response
      */
-    public function edit(Pegawai $pegawai)
+    public function edit($id)
     {
-        //
+        return view('edit', [
+            'data_pegawai' => Pegawai::where('id', $id)->first()
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdatePegawaiRequest  $request
-     * @param  \App\Models\Pegawai  $pegawai
-     * @return \Illuminate\Http\Response
-     */
+    public function edit_store(Request $request)
+    {
+
+        $request->validate([
+            'nama' => 'required',
+            'jabatan' => 'required',
+            'umur' => 'required|numeric',
+            'alamat' => 'required'
+        ]);
+
+        DB::transaction(function () use ($request) {
+            $pegawai = Pegawai::find($request->id);
+            $pegawai->nama = $request->nama;
+            $pegawai->jabatan = $request->jabatan;
+            $pegawai->umur = $request->umur;
+            $pegawai->alamat = $request->alamat;
+            $pegawai->save();
+        });
+        return redirect()->route('index')->with('message', 'asdada');
+    }
+
+
     public function update(UpdatePegawaiRequest $request, Pegawai $pegawai)
     {
         //
